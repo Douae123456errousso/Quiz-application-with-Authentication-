@@ -4,6 +4,8 @@ import db.Myconnection;
 import model.User;
 import model.UserScore;
 
+import javax.swing.*;
+import java.awt.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -77,30 +79,7 @@ public class UserDAO {
         return ps.executeUpdate();
     }
 
-    public static void LanguageScore(String Email,String Lang)throws SQLException {
-        Connection connection =Myconnection.getConnection();
-        PreparedStatement ps = connection.prepareStatement("select * from score");
-        ResultSet rs =  ps.executeQuery();
-        System.out.println("_____________________");
-        System.out.printf("| %-10s | %-6s%n", "Name", "Score |");
-        System.out.println("|--------------------|");
 
-        while (rs.next()){
-            String f = rs.getString("Email");
-            String g = rs.getString("Lang");
-            String i = rs.getString("Name");
-            int h = rs.getInt("Score");
-
-            if(f.equals(Email)&&g.equals(Lang)) {
-                System.out.printf("| %-10s | %-6s",i,h);
-                System.out.println("|");
-
-            }
-
-        }
-        System.out.println("|--------------------|");
-
-    }
     public static String TotalScore(String Email) throws SQLException {
         Connection connection = Myconnection.getConnection();
         PreparedStatement ps = connection.prepareStatement("select * from score");
@@ -125,23 +104,7 @@ public class UserDAO {
 
         return Email;
     }
-    public static void UserDetails(String table)throws SQLException {
-        Connection connection =Myconnection.getConnection();
-        PreparedStatement ps = connection.prepareStatement("select * from "+table);
-        ResultSet rs =  ps.executeQuery();
-        System.out.println("________________________________________");
-        System.out.printf(" %-20s  %-20s%n", "Name", "Email ");
-        System.out.println("|---------------------------------------|");
 
-        while (rs.next()){
-            String f = rs.getString("Email");
-            String i = rs.getString("Name");
-                System.out.printf("| %-10s | %-21s",i,f);
-                System.out.println("|");
-
-        }
-        System.out.println("|---------------------------------------|");
-
-    }
 
 }
+

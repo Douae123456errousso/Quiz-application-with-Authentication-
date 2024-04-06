@@ -15,7 +15,7 @@ public class LoginView extends JFrame implements ActionListener {
     public LoginView(String email) throws SQLException {
         this.email = email;
         setTitle("Login View");
-        setSize(300, 200);
+        setSize(400, 400);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new GridLayout(4, 1));
 

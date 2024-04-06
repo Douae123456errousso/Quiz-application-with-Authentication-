@@ -1,5 +1,6 @@
 package AdminViews;
 import Excel_sheet.CreateExcel;
+import dao.UserDetailsGUI;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -7,7 +8,6 @@ import java.sql.SQLException;
 import java.util.Objects;
 import java.util.Scanner;
 import static dao.UserDAO.TotalScore;
-import static dao.UserDAO.UserDetails;
 
 public class AboutUser {
     public AboutUser() throws SQLException {
@@ -43,7 +43,8 @@ public class AboutUser {
 
     public void getUserDetail() throws SQLException {
         System.out.println("Here is the Detail of the User ");
-        UserDetails("users");
+        UserDetailsGUI userDetailsGUI = new UserDetailsGUI("users");
+        userDetailsGUI.setVisible(true);
         Back("x");
     }
 

@@ -53,7 +53,7 @@ public class SentScoreSelf {
             message.addRecipient(Message.RecipientType.TO, new InternetAddress(email));
 
 // Set Subject: header field
-            message.setSubject("Quiz Game OTP");
+            message.setSubject("Quiz Game Score");
 
 // Now set the actual message
             message.setText(UserDAO.TotalScore(email));

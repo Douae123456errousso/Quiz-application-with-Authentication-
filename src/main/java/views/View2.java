@@ -13,7 +13,7 @@ import java.sql.SQLException;
 public class View2 extends JFrame {
     public View2(UserScore userScore) {
         setTitle("Game Options");
-        setSize(500, 400);
+        setSize(500, 600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
 

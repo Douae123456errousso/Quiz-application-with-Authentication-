@@ -1,53 +1,117 @@
 package AdminViews;
 
+
+import dao.UserDetailsGUI;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.sql.SQLException;
 
-import static dao.UserDAO.UserDetails;
 
-public class AboutAdmin {
-    public AboutAdmin() throws SQLException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        System.out.println("Choose ");
-        System.out.println("Press 1 -> See all Admin");
-        System.out.println("Press 2 -> Add New Admin");
-        System.out.println("Press 3 -> Delete Admin ");
-        System.out.println("Press 4 -> Back ");
-        System.out.println("Press 0 to exit");
-        int choice = 0;
-        try{
-            choice = Integer.parseInt(br.readLine());
-        }catch(Exception e ){
-            System.out.println("Wrong input");
-            new AdminViews.AView1();
-        }
-        switch(choice){
-            case 1 -> SeeAllAdmin();
-            case 2 -> new AddNewAdmin();
-            case 3 -> new DeleteAdmin();
-            case 4 -> new AView1();
-            case 0 -> System.exit(0);
-        }
+
+public class AboutAdmin extends JFrame {
+    public AboutAdmin() throws SQLException  {
+        // See Admin button
+        setTitle("About Admin");
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setSize(800, 650);
+        setLocationRelativeTo(null);
+
+        JPanel panel = new JPanel(new GridLayout(1, 3, 10, 10));
+        panel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+
+        JButton SeeadminButton = new JButton("See all Admin");
+        SeeadminButton.setBackground(Color.BLACK);
+        SeeadminButton.setForeground(Color.WHITE);
+        SeeadminButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dispose(); // Close the current window
+                try {
+                    SeeAllAdmin();
+                } catch (SQLException ex) {
+                    throw new RuntimeException(ex);
+                }
+            }
+        });
+       // Add new Admin button
+
+
+        JButton NewAdminButton = new JButton("New Admin ");
+        NewAdminButton.setBackground(Color.BLACK);
+        NewAdminButton.setForeground(Color.WHITE);
+        NewAdminButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dispose(); // Close the current window
+                try {
+                    new AddNewAdmin();
+                } catch (SQLException ex) {
+                    throw new RuntimeException(ex);
+                }
+            }
+        });
+         // Delete Admin
+        JButton DeleteAdmin = new JButton("Delete Admin");
+        DeleteAdmin.setBackground(Color.BLACK);
+        DeleteAdmin.setForeground(Color.WHITE);
+        DeleteAdmin.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dispose(); // Close the current window
+                try {
+                    new DeleteAdmin();
+                } catch (SQLException ex) {
+                    throw new RuntimeException(ex);
+                }
+            }
+        });
+        // Button for Back
+        JButton Back = new JButton(" Back");
+        Back.setBackground(Color.BLACK);
+        Back.setForeground(Color.WHITE);
+        Back.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dispose(); // Close the current window
+                try {
+                    new AView1();
+                } catch (SQLException ex) {
+                    throw new RuntimeException(ex);
+                }
+            }
+        });
+
+        // For exit
+
+        JButton Exit = new JButton(" Exit");
+        Exit.setBackground(Color.BLACK);
+        Exit.setForeground(Color.WHITE);
+        Exit.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dispose(); // Close the current window
+                System.exit(0);
+            }
+        });
+
+
+
+        panel.add(SeeadminButton);
+        panel.add(NewAdminButton);
+        panel.add(DeleteAdmin);
+        panel.add(Back);
+        panel.add(Exit);
+
+        add(panel);
+        setVisible(true);
     }
     public static void SeeAllAdmin() throws SQLException {
-        UserDetails("admin");
-
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        System.out.println("Press 1 -> Back");
-        System.out.println("Press 0 to exit");
-        int choice = 0;
-        try {
-            choice = Integer.parseInt(br.readLine());
-
-        } catch (Exception e) {
-            System.out.println("Wrong input");
-
-            new AboutAdmin();
-        }
-        switch (choice) {
-            case 1 -> new AboutAdmin();
-            case 3 -> System.exit(0);
-        }
+        UserDetailsGUI userDetailsGUI = new UserDetailsGUI("admin");
+        userDetailsGUI.setVisible(true);
     }
 }

@@ -19,6 +19,8 @@ public class LanguageScreen extends JFrame implements ActionListener {
 
         setTitle("Language Selection");
         setSize(600, 400);
+       setLocationRelativeTo(null);
+
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
 
@@ -109,6 +111,8 @@ class Quiz extends JFrame {
         this.name = name; // Store the name
         setTitle("Quiz");
         setSize(500, 300);
+        setLocationRelativeTo(null);
+
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new GridLayout(6, 1)); // Corrected grid layout
 
@@ -227,6 +231,8 @@ class QuizNameScreen extends JFrame implements ActionListener {
         this.email = email;
 
         setTitle("Quiz Name");
+        setLocationRelativeTo(null);
+
         setSize(400, 150);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());

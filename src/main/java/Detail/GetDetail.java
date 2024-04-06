@@ -7,8 +7,8 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.sql.SQLException;
 
-class  GetDetail{
-    GetDetail(String email) throws SQLException {
+public class  GetDetail{
+    public GetDetail(String email) throws SQLException {
         System.out.println("Press 1 -> Sent Detail to Your Email ");
         System.out.println("Press 2 -> Play Again");
         System.out.println("Press 3 -> exit");

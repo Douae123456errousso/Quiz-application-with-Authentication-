@@ -1,28 +1,79 @@
 package AdminViews;
 
+import dao.UserDetailsGUI;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.sql.SQLException;
 
-public class AView1 {
+public class AView1 extends  JFrame{
     public AView1() throws SQLException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        System.out.println("Choose ");
-        System.out.println("Press 1 -> About Admin");
-        System.out.println("Press 2 -> About User");
-        System.out.println("Press 0 to exit");
-        int choice = 0;
-        try{
-            choice = Integer.parseInt(br.readLine());
-        }catch(Exception e ){
-            System.out.println("Wrong input");
-            new AView1();
-        }
-        switch(choice){
-            case 1 -> new AboutAdmin();
-            case 2 -> new AboutUser();
-            case 0 -> System.exit(0);
-        }
+        setTitle("Details");
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setSize(400, 300);
+        setLocationRelativeTo(null);
+
+        JPanel panel = new JPanel(new GridLayout(1, 3, 10, 10));
+        panel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+
+        JButton AboutAdminButton = new JButton("About Admin");
+        AboutAdminButton.setBackground(Color.BLACK);
+        AboutAdminButton.setForeground(Color.WHITE);
+        AboutAdminButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dispose(); // Close the current window
+                try {
+                    new AboutAdmin();
+                } catch (SQLException ex) {
+                    throw new RuntimeException(ex);
+                }
+            }
+        });
+        // Add new Admin button
+
+
+        JButton AboutUserButton = new JButton("About User ");
+        AboutUserButton.setBackground(Color.BLACK);
+        AboutUserButton.setForeground(Color.WHITE);
+        AboutUserButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dispose(); // Close the current window
+                try {
+                   new AboutUser();
+                } catch (SQLException ex) {
+                    throw new RuntimeException(ex);
+                }
+            }
+        });
+        JButton Exit = new JButton(" Exit");
+        Exit.setBackground(Color.RED);
+        Exit.setForeground(Color.WHITE);
+        Exit.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dispose(); // Close the current window
+                System.exit(0);
+            }
+        });
+
+
+
+        panel.add(AboutAdminButton);
+        panel.add(AboutUserButton);
+        panel.add(Exit);
+
+        add(panel);
+        setVisible(true);
+
     }
+  public static void main(String[ ] args) throws SQLException {
+        new AView1();
+  }
 }
 

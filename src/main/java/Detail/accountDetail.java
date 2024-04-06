@@ -1,5 +1,6 @@
 package Detail;
 
+import dao.LanguageScoreGUI;
 import model.UserScore;
 import views.LanguageScreen;
 import views.LoginView;
@@ -9,7 +10,6 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.sql.SQLException;
 
-import static dao.UserDAO.LanguageScore;
 import static dao.UserDAO.TotalScore;
 
 public class accountDetail {
@@ -60,7 +60,7 @@ public class accountDetail {
         System.out.println("Enter the name of Language");
         System.out.println("Email :"+email);
         System.out.println("Language :"+ Lang);
-        LanguageScore(email,Lang);
+        new LanguageScoreGUI(email,Lang);
 
         GetBack(email);
     }
@@ -93,21 +93,5 @@ public class accountDetail {
         }
     }
 
-/***write a front end for this java file where all the name of the name of the variables and function should remain same as
- * per the given
- *System.out.println("Press 1 -> Detail of Particular Field");
- *         System.out.println("Press 2 -> get Whole Detail");
- *         System.out.println("Press 3 -> exit");
- *          System.out.println("Press 1 -> Java");
- *         System.out.println("Press 2 -> JavaScript");
- *         System.out.println("Press 3 -> Web Development");
- *         System.out.println("Press 4 -> to exit");
- *           System.out.println("Choose :");
- *         System.out.println("Press 1 -> Start Play again ");
- *         System.out.println("Press 2 ->  Back");
- *         System.out.println("Press 3 -> exit"); this statements and all the statements look this this
- *         should shown as button of the screen
- *         button should be attrative with the hover effect
- *         and all the function have same functionally per the define does not change it
- *         */
+
 }
