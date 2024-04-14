@@ -1,61 +1,128 @@
 package AdminViews;
 
-import model.User;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+import java.sql.SQLException;
+import static dao.AdminDAO.saveAdmin;
+import static dao.UserDAO.isExist;
+
 import servies.GenerateOTP;
 import servies.SendOTPService;
-import servies.UserServices;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.sql.SQLException;
-import java.util.Scanner;
+public class AddNewAdmin extends JFrame implements ActionListener {
+    private JTextField nameField, emailField, passwordField, otpField;
+    private JButton sendOTPButton, addAdminButton, backButton, exitButton;
+    private String generatedOTP;
 
-import static dao.AdminDAO.saveAdmin;
+    public AddNewAdmin() {
+        setTitle("Add New Admin");
+        setSize(400, 300);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setLayout(new GridLayout(6, 2));
 
-public class AddNewAdmin {
-    public AddNewAdmin() throws SQLException {
-        Scanner scanner = new Scanner(System.in);
+        JLabel nameLabel = new JLabel("Enter name:");
+        nameField = new JTextField();
+        JLabel emailLabel = new JLabel("Enter email:");
+        emailField = new JTextField();
+        JLabel passwordLabel = new JLabel("Enter password:");
+        passwordField = new JPasswordField();
 
-        System.out.println("Enter name :");
-        String name = scanner.nextLine();
-        String message = ("Hey"+name+",\n Here is your OTP to Add as a admin in the Quiz Game");
-        System.out.println("Enter email :");
-        String email = scanner.nextLine();
-        System.out.println("Enter Password for the New Admin");
-        String Password = scanner.nextLine();
-        String genOTP = GenerateOTP.getOTP();
-        SendOTPService.sentOTP(email, genOTP,message);
-        System.out.println("Enter the otp");
-        String otp = scanner.nextLine();
-        if (otp.equals(genOTP)) {
-           saveAdmin(name,email,Password);
-            System.out.println("Admin is  save successfully");
+        sendOTPButton = new JButton("Send OTP");
+        backButton = new JButton("Back");
+        exitButton = new JButton("Exit");
+        add(nameLabel);
+        add(nameField);
+        add(emailLabel);
+        add(emailField);
+        add(passwordLabel);
+        add(passwordField);
+        add(sendOTPButton);
+        add(backButton);
+        add(exitButton);
 
-        }
-        else {
-            System.out.println("Wrong OTP");
-        }
-            BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-            System.out.println("Press 1 ->Add Other Admin");
-            System.out.println("Press 2 -> Back");
-            System.out.println("Press 0 to exit");
-            int choice = 0;
+
+        sendOTPButton.addActionListener(this);
+         backButton.addActionListener(this);
+         exitButton.addActionListener(this);
+        setVisible(true);
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == sendOTPButton) {
+            String name = nameField.getText();
+            String email = emailField.getText();
+            String password = passwordField.getText();
+
             try {
-                choice = Integer.parseInt(br.readLine());
+                if (isExist(email, "admin")) {
+                    JOptionPane.showMessageDialog(this, "Admin with this email already exists. Please use a different email.", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
 
-            } catch (Exception e) {
-                System.out.println("Wrong input");
+                generatedOTP = GenerateOTP.getOTP();
+                String message = "Hey " + name + ",\nHere is your OTP to add as an admin in the Quiz Game: " + generatedOTP;
+                SendOTPService.sentOTP(email, generatedOTP, message);
 
-                new AboutAdmin();
+                JPanel otpPanel = new JPanel(new GridLayout(2, 1));
+                otpField = new JTextField();
+                JButton addAdminButton = new JButton("Add Admin");
+
+                otpPanel.add(new JLabel("Enter OTP:"));
+                otpPanel.add(otpField);
+
+                otpPanel.add(addAdminButton);
+                add(otpPanel);
+
+                addAdminButton.addActionListener(this);
+
+                validate();
+                repaint();
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(this, "Error checking admin existence or sending OTP: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                dispose();
+                new AddNewAdmin();
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(this, "Error sending OTP. Please try again later.", "Error", JOptionPane.ERROR_MESSAGE);
+                dispose();
+                new AddNewAdmin();
             }
-            switch (choice) {
-                case 1 -> new AddNewAdmin();
-                case 2 -> new AboutAdmin();
-                case 3 -> System.exit(0);
+        } else if (e.getActionCommand().equals("Add Admin")) {
+
+            String otp = otpField.getText();
+            if (otp.equals(generatedOTP)) {
+                try {
+                    String name = nameField.getText();
+                    String email = emailField.getText();
+                    String password = passwordField.getText();
+
+                    saveAdmin(name, email, password);
+                    JOptionPane.showMessageDialog(this, "Admin saved successfully");
+                } catch (SQLException ex) {
+                    JOptionPane.showMessageDialog(this, "Error saving admin: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            } else {
+                JOptionPane.showMessageDialog(this, "Wrong OTP", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }else if(e.getSource() == backButton){
+            dispose();
+            try {
+                new AboutAdmin();
+            } catch (SQLException ex) {
+                throw new RuntimeException(ex);
+            }
+        }else{
+            dispose();
+            try {
+                new AView1();
+            } catch (SQLException ex) {
+                throw new RuntimeException(ex);
             }
         }
+    }
 
-   public static void main (String[] args) throws SQLException {
-       new AddNewAdmin();
-   }
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> new AddNewAdmin());
+    }
 }

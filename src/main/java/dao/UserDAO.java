@@ -84,9 +84,11 @@ public class UserDAO {
         Connection connection = Myconnection.getConnection();
         PreparedStatement ps = connection.prepareStatement("select * from score");
         ResultSet rs = ps.executeQuery();
-        System.out.println("__________________________________");
-        System.out.printf("|%-12s | %-8s|%-7s%n", "Name", "Score", "Lang    |");
-        System.out.println("|--------------------------------|");
+
+        StringBuilder table = new StringBuilder();
+        table.append("__________________________________\n");
+        table.append(String.format("|%-12s | %-8s|%-7s%n", "Name", "Score", "Lang    |"));
+        table.append("|--------------------------------|\n");
 
         while (rs.next()) {
             String f = rs.getString("Email");
@@ -95,14 +97,12 @@ public class UserDAO {
             int h = rs.getInt("Score");
 
             if (f.equals(Email)) {
-                System.out.printf("|%-12s | %-8d| %-7s", i, h, g);
-                System.out.println("|");
+                table.append(String.format("|%-12s | %-8d| %-7s|\n", i, h, g));
             }
         }
-        System.out.println("----------------------------------");
+        table.append("----------------------------------\n");
 
-
-        return Email;
+        return table.toString();
     }
 
 

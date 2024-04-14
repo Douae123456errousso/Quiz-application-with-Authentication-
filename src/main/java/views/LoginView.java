@@ -52,12 +52,8 @@ public class LoginView extends JFrame implements ActionListener {
                 dispose();
                 break;
             case "See Score":
-                try {
-                    new accountDetail(email);
-                    dispose();
-                } catch (SQLException ex) {
-                    throw new RuntimeException(ex);
-                }
+                new accountDetail(email);
+                dispose();
                 break;
             case "Exit":
                 System.exit(0);

@@ -3,29 +3,60 @@ package Detail;
 import servies.SentScoreSelf;
 import views.LanguageScreen;
 
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.sql.SQLException;
 
-public class  GetDetail{
-    public GetDetail(String email) throws SQLException {
-        System.out.println("Press 1 -> Sent Detail to Your Email ");
-        System.out.println("Press 2 -> Play Again");
-        System.out.println("Press 3 -> exit");
+public class GetDetail extends JFrame implements ActionListener {
+    private final JButton sendDetailButton;
+    private final JButton playAgainButton;
+    private final JButton exitButton,BackButton;
+    private final String email;
 
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        int choice = 0;
-        try {
-            choice = Integer.parseInt(br.readLine());
+    public GetDetail(String email) {
+        this.email = email;
 
-        } catch (Exception e) {
-            System.out.println("Wrong input");
+        setTitle("Get Detail");
+        setSize(400, 200);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setLayout(new GridLayout(3, 1));
+        setLocationRelativeTo(null);
+        sendDetailButton = new JButton("Sent Detail to Your Email");
+        playAgainButton = new JButton("Play Again");
+        BackButton = new JButton("Back");
+        exitButton = new JButton("Exit");
+
+        add(sendDetailButton);
+        add(playAgainButton);
+        add(exitButton);
+        add(BackButton);
+
+        sendDetailButton.addActionListener(this);
+        playAgainButton.addActionListener(this);
+        exitButton.addActionListener(this);
+        BackButton.addActionListener(this);
+
+        setVisible(true);
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        dispose();
+        if (e.getSource() == sendDetailButton) {
+            new SentScoreSelf(email);
+        } else if (e.getSource() == playAgainButton) {
+            new LanguageScreen(email);
+        } else if (e.getSource() == exitButton) {
+            System.exit(0);
+        }else{
+            new accountDetail(email);
         }
-        switch (choice) {
-            case 1 -> new SentScoreSelf(email);
-            case 2 -> new LanguageScreen(email);
-            case 3 -> System.exit(0);
-        }
+    }
 
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> new GetDetail("kiranjeetkour144"));
     }
 }

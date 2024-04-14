@@ -45,7 +45,7 @@ public class AView1 extends  JFrame{
             public void actionPerformed(ActionEvent e) {
                 dispose(); // Close the current window
                 try {
-                   new AboutUser();
+                    new AboutUser().setVisible(true);
                 } catch (SQLException ex) {
                     throw new RuntimeException(ex);
                 }

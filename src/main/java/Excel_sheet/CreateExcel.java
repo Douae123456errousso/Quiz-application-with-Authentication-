@@ -1,29 +1,87 @@
 package Excel_sheet;
 
+import AdminViews.Back;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.Arrays;
-import java.util.Scanner;
 
 import static Excel_sheet.ExcelDAO.ExcelDetail;
 
-public class CreateExcel {
+public class CreateExcel extends JFrame {
+
+    private JTextField filePathField;
+    private JTextField fileNameField;
+    private JButton generateButton;
+    private JButton backButton;
+    private JButton exitButton;
 
     public CreateExcel() {
-        // Get the file path from the user
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Enter the path where you want to save the Excel file:");
-        String filePath = scanner.nextLine();
+        setTitle("Excel Generator");
+        setLocationRelativeTo(null);
+        setSize(400, 200);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
 
-        System.out.println("Enter the name of the new file : ");
-        String fileName = scanner.next();
+        JPanel panel = new JPanel(new GridLayout(4, 2));
+        JLabel filePathLabel = new JLabel("File Path:");
+        filePathField = new JTextField();
+        JLabel fileNameLabel = new JLabel("File Name:");
+        fileNameField = new JTextField();
+        generateButton = new JButton("Generate Excel");
+        backButton = new JButton("Back");
+        exitButton = new JButton("Exit");
+
+        generateButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                generateExcel();
+            }
+        });
+
+        backButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    dispose();
+                    new Back("user");
+                } catch (SQLException ex) {
+                    throw new RuntimeException(ex);
+                }
+            }
+        });
+
+        exitButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.exit(0);
+            }
+        });
+
+        panel.add(filePathLabel);
+        panel.add(filePathField);
+        panel.add(fileNameLabel);
+        panel.add(fileNameField);
+        panel.add(generateButton);
+        panel.add(backButton);
+        panel.add(exitButton);
+
+        add(panel);
+        setVisible(true);
+    }
+
+    private void generateExcel() {
+        String filePath = filePathField.getText();
+        String fileName = fileNameField.getText();
 
         // Create a new Workbook
         try (Workbook workbook = new XSSFWorkbook()) {
@@ -70,6 +128,11 @@ public class CreateExcel {
     }
 
     public static void main(String[] args) {
-        new CreateExcel();
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                new CreateExcel();
+            }
+        });
     }
 }

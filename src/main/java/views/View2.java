@@ -27,11 +27,7 @@ public class View2 extends JFrame {
         accountDetailButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                try {
-                    new accountDetail(userScore.getEmail());
-                } catch (SQLException ex) {
-                    ex.printStackTrace();
-                }
+                new accountDetail(userScore.getEmail());
             }
         });
         buttonPanel.add(accountDetailButton);

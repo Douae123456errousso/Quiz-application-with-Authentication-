@@ -1,8 +1,6 @@
 package dao;
-
-import AdminViews.AView1;
+import AdminViews.Back;
 import db.Myconnection;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -11,12 +9,13 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Objects;
 
 public class UserDetailsGUI extends JFrame {
     private JPanel mainPanel;
     private JTable tableComponent;
 
-    public UserDetailsGUI(String tableName) {
+    public UserDetailsGUI(String tableName,String BackButton) {
         setTitle("User Details");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(400, 300);
@@ -41,7 +40,11 @@ public class UserDetailsGUI extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 dispose(); // Close the current window
                 try {
-                    new AView1();
+                    if(Objects.equals(BackButton, "user")) {
+                        new Back("user");
+                    }else{
+                        new Back("admin");
+                    }
                 } catch (SQLException ex) {
                     throw new RuntimeException(ex);
                 }

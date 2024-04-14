@@ -7,8 +7,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
 import java.sql.SQLException;
 
 
@@ -48,11 +46,7 @@ public class AboutAdmin extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 dispose(); // Close the current window
-                try {
-                    new AddNewAdmin();
-                } catch (SQLException ex) {
-                    throw new RuntimeException(ex);
-                }
+                new AddNewAdmin();
             }
         });
          // Delete Admin
@@ -63,11 +57,7 @@ public class AboutAdmin extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 dispose(); // Close the current window
-                try {
-                    new DeleteAdmin();
-                } catch (SQLException ex) {
-                    throw new RuntimeException(ex);
-                }
+                new DeleteAdmin();
             }
         });
         // Button for Back
@@ -111,7 +101,7 @@ public class AboutAdmin extends JFrame {
         setVisible(true);
     }
     public static void SeeAllAdmin() throws SQLException {
-        UserDetailsGUI userDetailsGUI = new UserDetailsGUI("admin");
+        UserDetailsGUI userDetailsGUI = new UserDetailsGUI("admin","admin");
         userDetailsGUI.setVisible(true);
     }
 }

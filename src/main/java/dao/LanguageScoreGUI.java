@@ -28,11 +28,7 @@ public class LanguageScoreGUI extends JFrame {
         nextButton.addActionListener(e -> {
             dispose(); // Close the current window
             // Open a new GetDetail window
-            try {
-                new GetDetail(email);
-            } catch (SQLException ex) {
-                throw new RuntimeException(ex);
-            }
+            new GetDetail(email);
         });
         buttonPanel.add(nextButton);
         add(buttonPanel, BorderLayout.SOUTH);
