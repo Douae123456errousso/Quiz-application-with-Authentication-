@@ -68,6 +68,7 @@ public class LanguageScreen extends JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+       dispose();
         String lang = "";
         switch (e.getActionCommand()) {
             case "Java":

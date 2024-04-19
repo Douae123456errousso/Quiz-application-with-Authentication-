@@ -126,8 +126,10 @@ public class Welcome extends JFrame {
                     if (UserDAO.isExist(email, name)) {
                         if (UserDAO.isPassword(email, password, name)) {
                             if (name.equals("Users")) {
+                                dispose();
                                 new LoginView(email);
                             } else {
+                                dispose();
                                 new AView1();
                             }
                             dispose(); // Close the current window upon successful login
@@ -221,7 +223,9 @@ public class Welcome extends JFrame {
                         ex.printStackTrace();
                     }
                 } else {
+                    dispose();
                     JOptionPane.showMessageDialog(Welcome.this, "Wrong OTP", "Error", JOptionPane.ERROR_MESSAGE);
+
                 }
             }
         });

@@ -11,7 +11,7 @@ public class Home extends JFrame {
     public Home() {
         setTitle("Quiz");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(800, 650);
+        setSize(800, 300);
         setLocationRelativeTo(null);
 
         JPanel panel = new JPanel(new GridLayout(1, 3, 10, 10));
@@ -45,6 +45,19 @@ public class Home extends JFrame {
             }
         });
 
+        JButton help = new JButton("Help");
+        help.setBackground(Color.BLUE);
+        help.setForeground(Color.WHITE);
+
+        help.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dispose(); // Close the current window
+
+            }
+        });
+
+
         JButton exitButton = new JButton("Exit");
         exitButton.setBackground(Color.RED);
         exitButton.setForeground(Color.WHITE);
@@ -58,7 +71,9 @@ public class Home extends JFrame {
 
         panel.add(adminButton);
         panel.add(userButton);
+        panel.add(help);
         panel.add(exitButton);
+
 
         add(panel);
         setVisible(true);

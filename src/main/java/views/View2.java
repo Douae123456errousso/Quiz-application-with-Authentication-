@@ -17,6 +17,7 @@ public class View2 extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
 
+
         JLabel titleLabel = new JLabel("Well Played");
         titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
         add(titleLabel, BorderLayout.NORTH);
@@ -27,6 +28,7 @@ public class View2 extends JFrame {
         accountDetailButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                dispose();
                 new accountDetail(userScore.getEmail());
             }
         });
@@ -36,6 +38,7 @@ public class View2 extends JFrame {
         languageButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                dispose();
                 new LanguageScreen(userScore.getEmail());
             }
         });
@@ -45,6 +48,7 @@ public class View2 extends JFrame {
         playAgainButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                dispose();
                 new QuizNameScreen(userScore.getLang(), userScore.getEmail());
             }
         });
@@ -54,6 +58,7 @@ public class View2 extends JFrame {
         sentDetailButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                dispose();
                 new SentScoreSelf(userScore.getEmail());
             }
         });
@@ -63,6 +68,7 @@ public class View2 extends JFrame {
         exitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                dispose();
                 System.exit(0);
             }
         });
