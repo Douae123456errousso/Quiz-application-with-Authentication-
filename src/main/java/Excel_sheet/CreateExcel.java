@@ -19,15 +19,12 @@ import static Excel_sheet.ExcelDAO.ExcelDetail;
 
 public class CreateExcel extends JFrame {
 
-    private JTextField filePathField;
-    private JTextField fileNameField;
-    private JButton generateButton;
-    private JButton backButton;
-    private JButton exitButton;
+    private final JTextField filePathField;
+    private final JTextField fileNameField;
 
     public CreateExcel() {
         setTitle("Excel Generator");
-        setLocationRelativeTo(null);
+
         setSize(400, 200);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
 
@@ -36,9 +33,9 @@ public class CreateExcel extends JFrame {
         filePathField = new JTextField();
         JLabel fileNameLabel = new JLabel("File Name:");
         fileNameField = new JTextField();
-        generateButton = new JButton("Generate Excel");
-        backButton = new JButton("Back");
-        exitButton = new JButton("Exit");
+        JButton generateButton = new JButton("Generate Excel");
+        JButton backButton = new JButton("Back");
+        JButton exitButton = new JButton("Exit");
 
         generateButton.addActionListener(new ActionListener() {
             @Override

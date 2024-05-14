@@ -25,7 +25,7 @@ properties.put("mail.smtp.port", "465");
 properties.put("mail.smtp.ssl.enable", "true");
 properties.put("mail.smtp.auth", "true");
 
-final String password = "iqpkegtrsxpwglzy";
+final String password = "yddeppdftmwjavap";
 // Get the Session object.// and pass username and password
 Session session = Session.getInstance(properties,new Authenticator(){
     protected  PasswordAuthentication getPasswordAuthentication(){

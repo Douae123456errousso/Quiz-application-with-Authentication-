@@ -1,4 +1,5 @@
 package dao;
+import AdminViews.Back;
 import db.Myconnection;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -41,6 +42,19 @@ public class ScoreGUI extends JFrame {
         mainPanel.add(scrollPane, BorderLayout.CENTER);
 
         add(mainPanel);
+
+
+        BackButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    dispose();
+                    new Back("user");
+                } catch (SQLException ex) {
+                    throw new RuntimeException(ex);
+                }
+            }
+        });
 
         searchButton.addActionListener(new ActionListener() {
             @Override
