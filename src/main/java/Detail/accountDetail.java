@@ -25,18 +25,15 @@ public class accountDetail extends JFrame implements ActionListener {
         setLocationRelativeTo(null);
         detailButton = new JButton("Detail of Particular Language");
         fullDetailButton = new JButton("Get Whole Detail");
-        backButton = new JButton("Back");
         exitButton = new JButton("Exit");
 
         add(detailButton);
         add(fullDetailButton);
-        add(backButton);
         add(exitButton);
 
         detailButton.addActionListener(this);
         fullDetailButton.addActionListener(this);
         exitButton.addActionListener(this);
-        backButton.addActionListener(this);
 
         setVisible(true);
     }
@@ -54,11 +51,8 @@ public class accountDetail extends JFrame implements ActionListener {
             } catch (SQLException ex) {
                 throw new RuntimeException(ex);
             }
-        } else if (e.getSource() == exitButton) {
-            System.exit(0);
         }else {
-            dispose();
-           new Welcome();
+            System.exit(0);
         }
     }
 

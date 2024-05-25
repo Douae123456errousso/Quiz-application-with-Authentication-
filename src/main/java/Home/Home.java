@@ -10,8 +10,16 @@ import java.awt.geom.RoundRectangle2D;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
+import java.net.URISyntaxException;
 
 public class Home extends JFrame {
+    private void openWebpage(String urlString) {
+        try {
+            Desktop.getDesktop().browse(new URL(urlString).toURI());
+        } catch (IOException | URISyntaxException e) {
+            e.printStackTrace();
+        }
+    }
 
     public Home() {
         setTitle("Quiz");
@@ -70,6 +78,9 @@ public class Home extends JFrame {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     dispose(); // Close the current window
+                    openWebpage("https://kiranjeet28.github.io/Help-Page-of-Quiz-app/");
+                    System.exit(0);
+
                 }
             });
 
