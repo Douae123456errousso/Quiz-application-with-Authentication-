@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>LanguageScoreGUI.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Project-1</a> &gt; <a href="index.source.html" class="el_package">dao</a> &gt; <span class="el_source">LanguageScoreGUI.java</span></div><h1>LanguageScoreGUI.java</h1><pre class="source lang-java linenums">package dao;
+
+import Detail.GetDetail;
+import db.Myconnection;
+
+import javax.swing.*;
+import java.awt.*;
+import java.sql.*;
+
+public class LanguageScoreGUI extends JFrame {
+    private JTable table;
+
+<span class="nc" id="L13">    public LanguageScoreGUI(String email, String lang) {</span>
+<span class="nc" id="L14">        setTitle(&quot;Language Score&quot;);</span>
+<span class="nc" id="L15">        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);</span>
+<span class="nc" id="L16">        setSize(400, 300);</span>
+<span class="nc" id="L17">        setLocationRelativeTo(null);</span>
+
+<span class="nc" id="L19">        String[] columnNames = {&quot;Name&quot;, &quot;Score&quot;};</span>
+<span class="nc" id="L20">        Object[][] data = getLanguageScores(email, lang);</span>
+<span class="nc" id="L21">        table = new JTable(data, columnNames);</span>
+<span class="nc" id="L22">        JScrollPane scrollPane = new JScrollPane(table);</span>
+<span class="nc" id="L23">        add(scrollPane);</span>
+
+        // Create a panel to hold the button
+<span class="nc" id="L26">        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));</span>
+<span class="nc" id="L27">        JButton nextButton = new JButton(&quot;Next&quot;);</span>
+<span class="nc" id="L28">        nextButton.addActionListener(e -&gt; {</span>
+<span class="nc" id="L29">            dispose(); // Close the current window</span>
+            // Open a new GetDetail window
+<span class="nc" id="L31">            new GetDetail(email);</span>
+<span class="nc" id="L32">        });</span>
+<span class="nc" id="L33">        buttonPanel.add(nextButton);</span>
+<span class="nc" id="L34">        add(buttonPanel, BorderLayout.SOUTH);</span>
+
+<span class="nc" id="L36">        setVisible(true);</span>
+<span class="nc" id="L37">    }</span>
+
+    private Object[][] getLanguageScores(String email, String lang) {
+<span class="nc" id="L40">        Object[][] data = null;</span>
+        try {
+<span class="nc" id="L42">            Connection connection = Myconnection.getConnection();</span>
+<span class="nc" id="L43">            PreparedStatement ps = connection.prepareStatement(&quot;SELECT Name, Score FROM score WHERE Email = ? AND Lang = ?&quot;, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);</span>
+<span class="nc" id="L44">            ps.setString(1, email);</span>
+<span class="nc" id="L45">            ps.setString(2, lang);</span>
+<span class="nc" id="L46">            ResultSet rs = ps.executeQuery();</span>
+
+<span class="nc" id="L48">            rs.last();</span>
+<span class="nc" id="L49">            int rowCount = rs.getRow();</span>
+<span class="nc" id="L50">            rs.beforeFirst();</span>
+
+<span class="nc" id="L52">            data = new Object[rowCount][2];</span>
+<span class="nc" id="L53">            int row = 0;</span>
+<span class="nc bnc" id="L54" title="All 2 branches missed.">            while (rs.next()) {</span>
+<span class="nc" id="L55">                String name = rs.getString(&quot;Name&quot;);</span>
+<span class="nc" id="L56">                int score = rs.getInt(&quot;Score&quot;);</span>
+<span class="nc" id="L57">                data[row][0] = name;</span>
+<span class="nc" id="L58">                data[row][1] = score;</span>
+<span class="nc" id="L59">                row++;</span>
+<span class="nc" id="L60">            }</span>
+<span class="nc" id="L61">        } catch (SQLException e) {</span>
+<span class="nc" id="L62">            e.printStackTrace();</span>
+<span class="nc" id="L63">        }</span>
+<span class="nc" id="L64">        return data;</span>
+    }
+
+    public static void main(String[] args) {
+<span class="nc" id="L68">        SwingUtilities.invokeLater(() -&gt; {</span>
+<span class="nc" id="L69">            new LanguageScoreGUI(&quot;kiranjeetkour144&quot;, &quot;Java&quot;);</span>
+<span class="nc" id="L70">        });</span>
+<span class="nc" id="L71">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

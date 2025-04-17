@@ -37,4 +37,9 @@ public class User {
         this.Password = Password;
         this.name = name;
     }
+
+    public User() {
+    // Constructeur vide pour les tests ou frameworks comme JUnit, Jackson, etc.
+    }
+
 }

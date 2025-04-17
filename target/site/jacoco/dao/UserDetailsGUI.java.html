@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>UserDetailsGUI.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Project-1</a> &gt; <a href="index.source.html" class="el_package">dao</a> &gt; <span class="el_source">UserDetailsGUI.java</span></div><h1>UserDetailsGUI.java</h1><pre class="source lang-java linenums">package dao;
+import AdminViews.Back;
+import db.Myconnection;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Objects;
+
+public class UserDetailsGUI extends JFrame {
+    private JPanel mainPanel;
+    private JTable tableComponent;
+
+<span class="nc" id="L18">    public UserDetailsGUI(String tableName,String BackButton) {</span>
+<span class="nc" id="L19">        setTitle(&quot;User Details&quot;);</span>
+<span class="nc" id="L20">        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);</span>
+<span class="nc" id="L21">        setSize(400, 300);</span>
+<span class="nc" id="L22">        setLocationRelativeTo(null);</span>
+
+<span class="nc" id="L24">        mainPanel = new JPanel(new BorderLayout());</span>
+<span class="nc" id="L25">        add(mainPanel);</span>
+
+<span class="nc" id="L27">        String[] columnNames = {&quot;Name&quot;, &quot;Email&quot;};</span>
+<span class="nc" id="L28">        Object[][] data = getUserDetails(tableName);</span>
+<span class="nc" id="L29">        tableComponent = new JTable(data, columnNames);</span>
+<span class="nc" id="L30">        JScrollPane scrollPane = new JScrollPane(tableComponent);</span>
+<span class="nc" id="L31">        mainPanel.add(scrollPane, BorderLayout.CENTER);</span>
+
+<span class="nc" id="L33">        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER)); // Create a panel for buttons</span>
+
+<span class="nc" id="L35">        JButton back = new JButton(&quot;Back&quot;);</span>
+<span class="nc" id="L36">        back.setBackground(Color.BLACK);</span>
+<span class="nc" id="L37">        back.setForeground(Color.WHITE);</span>
+<span class="nc" id="L38">        back.addActionListener(new ActionListener() {</span>
+            @Override
+            public void actionPerformed(ActionEvent e) {
+<span class="nc" id="L41">                dispose(); // Close the current window</span>
+                try {
+<span class="nc bnc" id="L43" title="All 2 branches missed.">                    if(Objects.equals(BackButton, &quot;user&quot;)) {</span>
+<span class="nc" id="L44">                        new Back(&quot;user&quot;);</span>
+                    }else{
+<span class="nc" id="L46">                        new Back(&quot;admin&quot;);</span>
+                    }
+<span class="nc" id="L48">                } catch (SQLException ex) {</span>
+<span class="nc" id="L49">                    throw new RuntimeException(ex);</span>
+<span class="nc" id="L50">                }</span>
+<span class="nc" id="L51">            }</span>
+        });
+
+<span class="nc" id="L54">        JButton exit = new JButton(&quot;Exit&quot;);</span>
+<span class="nc" id="L55">        exit.setBackground(Color.BLACK);</span>
+<span class="nc" id="L56">        exit.setForeground(Color.WHITE);</span>
+<span class="nc" id="L57">        exit.addActionListener(new ActionListener() {</span>
+            @Override
+            public void actionPerformed(ActionEvent e) {
+<span class="nc" id="L60">                dispose(); // Close the current window</span>
+<span class="nc" id="L61">                System.exit(0);</span>
+<span class="nc" id="L62">            }</span>
+        });
+
+<span class="nc" id="L65">        buttonPanel.add(back);</span>
+<span class="nc" id="L66">        buttonPanel.add(exit);</span>
+<span class="nc" id="L67">        mainPanel.add(buttonPanel, BorderLayout.SOUTH); // Add the button panel below the table</span>
+
+<span class="nc" id="L69">        setVisible(true);</span>
+<span class="nc" id="L70">    }</span>
+
+    public Object[][] getUserDetails(String tableName) {
+<span class="nc" id="L73">        Object[][] data = null;</span>
+        try {
+<span class="nc" id="L75">            Connection connection = Myconnection.getConnection();</span>
+<span class="nc" id="L76">            PreparedStatement ps = connection.prepareStatement(&quot;select * from &quot; + tableName, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);</span>
+
+<span class="nc" id="L78">            ResultSet rs = ps.executeQuery();</span>
+
+<span class="nc" id="L80">            rs.last();</span>
+<span class="nc" id="L81">            int rowCount = rs.getRow();</span>
+<span class="nc" id="L82">            rs.beforeFirst();</span>
+
+<span class="nc" id="L84">            data = new Object[rowCount][2];</span>
+<span class="nc" id="L85">            int row = 0;</span>
+<span class="nc bnc" id="L86" title="All 2 branches missed.">            while (rs.next()) {</span>
+<span class="nc" id="L87">                String name = rs.getString(&quot;Name&quot;);</span>
+<span class="nc" id="L88">                String email = rs.getString(&quot;Email&quot;);</span>
+<span class="nc" id="L89">                data[row][0] = name;</span>
+<span class="nc" id="L90">                data[row][1] = email;</span>
+<span class="nc" id="L91">                row++;</span>
+<span class="nc" id="L92">            }</span>
+<span class="nc" id="L93">        } catch (SQLException e) {</span>
+<span class="nc" id="L94">            e.printStackTrace();</span>
+<span class="nc" id="L95">        }</span>
+<span class="nc" id="L96">        return data;    }</span>
+
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

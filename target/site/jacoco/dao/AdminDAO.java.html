@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AdminDAO.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Project-1</a> &gt; <a href="index.source.html" class="el_package">dao</a> &gt; <span class="el_source">AdminDAO.java</span></div><h1>AdminDAO.java</h1><pre class="source lang-java linenums">package dao;
+
+
+import db.Myconnection;
+import model.User;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+
+<span class="nc" id="L11">public class AdminDAO{</span>
+
+        public static int saveAdmin(String name,String email ,String password) throws SQLException {
+<span class="nc" id="L14">            Connection connection = Myconnection.getConnection();</span>
+            PreparedStatement ps;
+<span class="nc" id="L16">            ps = connection.prepareStatement(&quot;insert into admin(email,password,name) values(?,?,?) &quot;);</span>
+<span class="nc" id="L17">            ps.setString(1,email);</span>
+<span class="nc" id="L18">            ps.setString(2,password);</span>
+<span class="nc" id="L19">            ps.setString(3,name);</span>
+<span class="nc" id="L20">            return ps.executeUpdate();</span>
+    }
+    public static int deleteAdmin(String email) throws SQLException {
+<span class="nc" id="L23">        Connection connection = Myconnection.getConnection();</span>
+<span class="nc" id="L24">        PreparedStatement ps = null;</span>
+<span class="nc" id="L25">        int rowsAffected = 0;</span>
+        try {
+<span class="nc" id="L27">            String query = &quot;DELETE FROM admin WHERE email=?&quot;;</span>
+<span class="nc" id="L28">            ps = connection.prepareStatement(query);</span>
+<span class="nc" id="L29">            ps.setString(1, email);</span>
+<span class="nc" id="L30">            rowsAffected = ps.executeUpdate();</span>
+        } finally {
+            // Close resources in a finally block
+<span class="nc bnc" id="L33" title="All 2 branches missed.">            if (ps != null) {</span>
+<span class="nc" id="L34">                ps.close();</span>
+            }
+<span class="nc bnc" id="L36" title="All 2 branches missed.">            if (connection != null) {</span>
+<span class="nc" id="L37">                connection.close();</span>
+            }
+        }
+<span class="nc" id="L40">        return rowsAffected;</span>
+    }
+
+}
+
+// Create a class for save and delete admin
+// Generate OTP class edit new function
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

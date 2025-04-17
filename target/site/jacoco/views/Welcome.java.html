@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Welcome.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Project-1</a> &gt; <a href="index.source.html" class="el_package">views</a> &gt; <span class="el_source">Welcome.java</span></div><h1>Welcome.java</h1><pre class="source lang-java linenums">package views;
+import AdminViews.AView1;
+import dao.UserDAO;
+import model.User;
+import servies.GenerateOTP;
+import servies.SendOTPService;
+import servies.UserServices;
+import views.LoginView;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.SQLException;
+
+
+<span class="nc" id="L17">public class Welcome extends JFrame {</span>
+    private JTextField emailField;
+    private JTextField nameField;
+    private JPasswordField passwordField;
+    private String name;
+
+    private JPanel mainPanel;
+
+    public void welcomeScreen() throws SQLException {
+<span class="nc" id="L26">        setTitle(&quot;Welcome to the App&quot;);</span>
+<span class="nc" id="L27">        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);</span>
+
+<span class="nc" id="L29">        mainPanel = new JPanel(new GridLayout(3, 1, 10, 10));</span>
+<span class="nc" id="L30">        mainPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));</span>
+
+<span class="nc" id="L32">        JButton loginButton = new JButton(&quot;Login&quot;);</span>
+<span class="nc" id="L33">        JButton signupButton = new JButton(&quot;Signup&quot;);</span>
+<span class="nc" id="L34">        JButton exitButton = new JButton(&quot;Exit&quot;);</span>
+
+<span class="nc" id="L36">        loginButton.setPreferredSize(new Dimension(200, 40));</span>
+<span class="nc" id="L37">        signupButton.setPreferredSize(new Dimension(200, 40));</span>
+<span class="nc" id="L38">        exitButton.setPreferredSize(new Dimension(200, 40));</span>
+
+<span class="nc" id="L40">        loginButton.setBackground(Color.BLACK);</span>
+<span class="nc" id="L41">        signupButton.setBackground(Color.BLACK);</span>
+<span class="nc" id="L42">        exitButton.setBackground(Color.RED);</span>
+
+<span class="nc" id="L44">        loginButton.setForeground(Color.WHITE);</span>
+<span class="nc" id="L45">        signupButton.setForeground(Color.WHITE);</span>
+<span class="nc" id="L46">        exitButton.setForeground(Color.WHITE);</span>
+
+<span class="nc" id="L48">        loginButton.addActionListener(new ActionListener() {</span>
+            public void actionPerformed(ActionEvent e) {
+<span class="nc" id="L50">                mainPanel.removeAll();</span>
+<span class="nc" id="L51">                mainPanel.revalidate();</span>
+<span class="nc" id="L52">                mainPanel.repaint();</span>
+<span class="nc" id="L53">                login(&quot;Users&quot;);</span>
+<span class="nc" id="L54">            }</span>
+        });
+
+<span class="nc" id="L57">        signupButton.addActionListener(new ActionListener() {</span>
+            public void actionPerformed(ActionEvent e) {
+<span class="nc" id="L59">                mainPanel.removeAll();</span>
+<span class="nc" id="L60">                mainPanel.revalidate();</span>
+<span class="nc" id="L61">                mainPanel.repaint();</span>
+                try {
+<span class="nc" id="L63">                    signUp();</span>
+<span class="nc" id="L64">                } catch (SQLException ex) {</span>
+<span class="nc" id="L65">                    ex.printStackTrace();</span>
+<span class="nc" id="L66">                }</span>
+<span class="nc" id="L67">            }</span>
+        });
+
+<span class="nc" id="L70">        exitButton.addActionListener(new ActionListener() {</span>
+            public void actionPerformed(ActionEvent e) {
+<span class="nc" id="L72">                System.exit(0);</span>
+<span class="nc" id="L73">            }</span>
+        });
+
+<span class="nc" id="L76">        mainPanel.add(loginButton);</span>
+<span class="nc" id="L77">        mainPanel.add(signupButton);</span>
+<span class="nc" id="L78">        mainPanel.add(exitButton);</span>
+
+<span class="nc" id="L80">        add(mainPanel);</span>
+<span class="nc" id="L81">        pack();</span>
+<span class="nc" id="L82">        setLocationRelativeTo(null);</span>
+<span class="nc" id="L83">        setVisible(true);</span>
+<span class="nc" id="L84">    }</span>
+
+    public void login(String name) {
+<span class="nc" id="L87">        this.name = name;</span>
+<span class="nc" id="L88">        setTitle(&quot;Login&quot;);</span>
+<span class="nc" id="L89">        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);</span>
+
+<span class="nc" id="L91">        JPanel panel = new JPanel(new GridBagLayout());</span>
+<span class="nc" id="L92">        panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));</span>
+
+<span class="nc" id="L94">        GridBagConstraints gbc = new GridBagConstraints();</span>
+<span class="nc" id="L95">        gbc.gridx = 0;</span>
+<span class="nc" id="L96">        gbc.gridy = 0;</span>
+<span class="nc" id="L97">        gbc.insets = new Insets(5, 5, 5, 5);</span>
+<span class="nc" id="L98">        gbc.anchor = GridBagConstraints.WEST;</span>
+
+<span class="nc" id="L100">        JLabel emailLabel = new JLabel(&quot;Email:&quot;);</span>
+<span class="nc" id="L101">        panel.add(emailLabel, gbc);</span>
+
+<span class="nc" id="L103">        gbc.gridy++;</span>
+<span class="nc" id="L104">        emailField = new JTextField(20);</span>
+<span class="nc" id="L105">        panel.add(emailField, gbc);</span>
+
+<span class="nc" id="L107">        gbc.gridy++;</span>
+<span class="nc" id="L108">        JLabel passwordLabel = new JLabel(&quot;Password:&quot;);</span>
+<span class="nc" id="L109">        panel.add(passwordLabel, gbc);</span>
+
+<span class="nc" id="L111">        gbc.gridy++;</span>
+<span class="nc" id="L112">        passwordField = new JPasswordField(20);</span>
+<span class="nc" id="L113">        panel.add(passwordField, gbc);</span>
+
+<span class="nc" id="L115">        gbc.gridy++;</span>
+<span class="nc" id="L116">        gbc.gridwidth = 2;</span>
+<span class="nc" id="L117">        JButton loginButton = new JButton(&quot;Login&quot;);</span>
+<span class="nc" id="L118">        loginButton.setPreferredSize(new Dimension(200, 40));</span>
+<span class="nc" id="L119">        loginButton.setBackground(Color.BLACK);</span>
+<span class="nc" id="L120">        loginButton.setForeground(Color.WHITE);</span>
+<span class="nc" id="L121">        loginButton.addActionListener(new ActionListener() {</span>
+            public void actionPerformed(ActionEvent e) {
+<span class="nc" id="L123">                String email = emailField.getText();</span>
+<span class="nc" id="L124">                String password = new String(passwordField.getPassword());</span>
+                try {
+<span class="nc bnc" id="L126" title="All 2 branches missed.">                    if (UserDAO.isExist(email, name)) {</span>
+<span class="nc bnc" id="L127" title="All 2 branches missed.">                        if (UserDAO.isPassword(email, password, name)) {</span>
+<span class="nc bnc" id="L128" title="All 2 branches missed.">                            if (name.equals(&quot;Users&quot;)) {</span>
+<span class="nc" id="L129">                                dispose();</span>
+<span class="nc" id="L130">                                new LoginView(email);</span>
+                            } else {
+<span class="nc" id="L132">                                dispose();</span>
+<span class="nc" id="L133">                                new AView1();</span>
+                            }
+<span class="nc" id="L135">                            dispose(); // Close the current window upon successful login</span>
+                        } else {
+<span class="nc" id="L137">                            JOptionPane.showMessageDialog(Welcome.this, &quot;Wrong Password&quot;, &quot;Error&quot;, JOptionPane.ERROR_MESSAGE);</span>
+<span class="nc" id="L138">                            dispose(); // Close the current window upon successful login</span>
+<span class="nc" id="L139">                            login(name);</span>
+                        }
+                    } else {
+<span class="nc" id="L142">                        JOptionPane.showMessageDialog(Welcome.this, &quot;User not Found&quot;, &quot;Error&quot;, JOptionPane.ERROR_MESSAGE);</span>
+<span class="nc" id="L143">                        dispose(); // Close the current window upon successful login</span>
+<span class="nc" id="L144">                        login(name);</span>
+                    }
+<span class="nc" id="L146">                } catch (SQLException ex) {</span>
+<span class="nc" id="L147">                    ex.printStackTrace();</span>
+<span class="nc" id="L148">                }</span>
+<span class="nc" id="L149">            }</span>
+        });
+<span class="nc" id="L151">        panel.add(loginButton, gbc);</span>
+
+<span class="nc" id="L153">        add(panel);</span>
+<span class="nc" id="L154">        pack();</span>
+<span class="nc" id="L155">        setLocationRelativeTo(null);</span>
+<span class="nc" id="L156">        setVisible(true);</span>
+<span class="nc" id="L157">    }</span>
+
+    private void signUp() throws SQLException {
+<span class="nc" id="L160">        setTitle(&quot;Sign Up&quot;);</span>
+<span class="nc" id="L161">        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);</span>
+
+<span class="nc" id="L163">        JPanel panel = new JPanel(new GridBagLayout());</span>
+<span class="nc" id="L164">        panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));</span>
+
+<span class="nc" id="L166">        GridBagConstraints gbc = new GridBagConstraints();</span>
+<span class="nc" id="L167">        gbc.gridx = 0;</span>
+<span class="nc" id="L168">        gbc.gridy = 0;</span>
+<span class="nc" id="L169">        gbc.insets = new Insets(5, 5, 5, 5);</span>
+<span class="nc" id="L170">        gbc.anchor = GridBagConstraints.WEST;</span>
+
+<span class="nc" id="L172">        JLabel nameLabel = new JLabel(&quot;Name:&quot;);</span>
+<span class="nc" id="L173">        panel.add(nameLabel, gbc);</span>
+
+<span class="nc" id="L175">        gbc.gridy++;</span>
+<span class="nc" id="L176">        nameField = new JTextField(20);</span>
+<span class="nc" id="L177">        panel.add(nameField, gbc);</span>
+
+<span class="nc" id="L179">        gbc.gridy++;</span>
+<span class="nc" id="L180">        JLabel emailLabel = new JLabel(&quot;Email:&quot;);</span>
+<span class="nc" id="L181">        panel.add(emailLabel, gbc);</span>
+
+<span class="nc" id="L183">        gbc.gridy++;</span>
+<span class="nc" id="L184">        emailField = new JTextField(20);</span>
+<span class="nc" id="L185">        panel.add(emailField, gbc);</span>
+
+<span class="nc" id="L187">        gbc.gridy++;</span>
+<span class="nc" id="L188">        JLabel passwordLabel = new JLabel(&quot;Password:&quot;);</span>
+<span class="nc" id="L189">        panel.add(passwordLabel, gbc);</span>
+
+<span class="nc" id="L191">        gbc.gridy++;</span>
+<span class="nc" id="L192">        passwordField = new JPasswordField(20);</span>
+<span class="nc" id="L193">        panel.add(passwordField, gbc);</span>
+
+<span class="nc" id="L195">        gbc.gridy++;</span>
+<span class="nc" id="L196">        gbc.gridwidth = 2;</span>
+<span class="nc" id="L197">        JButton signUpButton = new JButton(&quot;Sign Up&quot;);</span>
+<span class="nc" id="L198">        signUpButton.setPreferredSize(new Dimension(200, 40));</span>
+<span class="nc" id="L199">        signUpButton.setBackground(Color.BLACK);</span>
+<span class="nc" id="L200">        signUpButton.setForeground(Color.WHITE);</span>
+<span class="nc" id="L201">        signUpButton.addActionListener(new ActionListener() {</span>
+            public void actionPerformed(ActionEvent e) {
+<span class="nc" id="L203">                String name = nameField.getText();</span>
+<span class="nc" id="L204">                String email = emailField.getText();</span>
+<span class="nc" id="L205">                String password = new String(passwordField.getPassword());</span>
+<span class="nc" id="L206">                String message = &quot;Hey &quot; + name + &quot;, Your OTP to SignUp in the Quiz Game &quot;;</span>
+<span class="nc" id="L207">                String genOTP = GenerateOTP.getOTP();</span>
+<span class="nc" id="L208">                SendOTPService.sentOTP(email, genOTP, message);</span>
+
+<span class="nc" id="L210">                String otp = JOptionPane.showInputDialog(Welcome.this, &quot;Enter the OTP:&quot;);</span>
+<span class="nc bnc" id="L211" title="All 4 branches missed.">                if (otp != null &amp;&amp; otp.equals(genOTP)) {</span>
+<span class="nc" id="L212">                    User user = new User(email, name, password);</span>
+                    try {
+<span class="nc" id="L214">                        int response = UserServices.saveUser(user);</span>
+<span class="nc bnc" id="L215" title="All 2 branches missed.">                        if (response == 1) {</span>
+<span class="nc" id="L216">                            JOptionPane.showMessageDialog(Welcome.this, &quot;User registered.\nLogin to Get Started.&quot;);</span>
+<span class="nc" id="L217">                            dispose();</span>
+<span class="nc" id="L218">                            new LoginView(&quot;Users&quot;);</span>
+                        } else {
+<span class="nc" id="L220">                            JOptionPane.showMessageDialog(Welcome.this, &quot;Failed to register user.&quot;, &quot;Error&quot;, JOptionPane.ERROR_MESSAGE);</span>
+                        }
+<span class="nc" id="L222">                    } catch (SQLException ex) {</span>
+<span class="nc" id="L223">                        ex.printStackTrace();</span>
+<span class="nc" id="L224">                    }</span>
+<span class="nc" id="L225">                } else {</span>
+<span class="nc" id="L226">                    dispose();</span>
+<span class="nc" id="L227">                    JOptionPane.showMessageDialog(Welcome.this, &quot;Wrong OTP&quot;, &quot;Error&quot;, JOptionPane.ERROR_MESSAGE);</span>
+
+                }
+<span class="nc" id="L230">            }</span>
+        });
+<span class="nc" id="L232">        panel.add(signUpButton, gbc);</span>
+
+<span class="nc" id="L234">        add(panel);</span>
+<span class="nc" id="L235">        pack();</span>
+<span class="nc" id="L236">        setLocationRelativeTo(null);</span>
+<span class="nc" id="L237">        setVisible(true);</span>
+<span class="nc" id="L238">    }</span>
+
+    public static void main(String[] args) {
+<span class="nc" id="L241">        SwingUtilities.invokeLater(() -&gt; {</span>
+            try {
+<span class="nc" id="L243">                new Welcome().welcomeScreen();</span>
+<span class="nc" id="L244">            } catch (SQLException e) {</span>
+<span class="nc" id="L245">                e.printStackTrace();</span>
+<span class="nc" id="L246">            }</span>
+<span class="nc" id="L247">        });</span>
+<span class="nc" id="L248">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

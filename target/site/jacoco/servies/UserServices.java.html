@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>UserServices.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Project-1</a> &gt; <a href="index.source.html" class="el_package">servies</a> &gt; <span class="el_source">UserServices.java</span></div><h1>UserServices.java</h1><pre class="source lang-java linenums">package servies;
+
+import dao.UserDAO;
+import model.User;
+
+import java.sql.SQLException;
+
+
+<span class="nc" id="L9">public class UserServices{</span>
+    public static int saveUser(User user) {
+<span class="fc" id="L11">        System.out.println(user.getEmail());</span>
+        try {
+<span class="fc bfc" id="L13" title="All 2 branches covered.">            if(UserDAO.isExist(user.getEmail(),&quot;Users&quot;)) {</span>
+<span class="fc" id="L14">                System.out.println(&quot;User with this email already exists.&quot;);</span>
+<span class="fc" id="L15">                return -1; // User with the same email already exists</span>
+            } else {
+<span class="fc" id="L17">                int result = UserDAO.saveUser(user);</span>
+<span class="fc bfc" id="L18" title="All 2 branches covered.">                if (result &gt; 0) {</span>
+<span class="fc" id="L19">                    System.out.println(&quot;Successfull save&quot;);</span>
+<span class="fc" id="L20">                    return 1; // Successful save</span>
+                } else {
+<span class="fc" id="L22">                    return -2; // Failed to save for some reason</span>
+                }
+            }
+<span class="fc" id="L25">        } catch (SQLException ex) {</span>
+<span class="fc" id="L26">            ex.printStackTrace();</span>
+<span class="fc" id="L27">            return -3; // Error occurred</span>
+        }
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

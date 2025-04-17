@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>accountDetail.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Project-1</a> &gt; <a href="index.source.html" class="el_package">Detail</a> &gt; <span class="el_source">accountDetail.java</span></div><h1>accountDetail.java</h1><pre class="source lang-java linenums">package Detail;
+import dao.AccoutDetailOFParticularUser;
+import dao.LanguageScoreGUI;
+import views.Welcome;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+import java.sql.SQLException;
+
+public class accountDetail extends JFrame implements ActionListener {
+    private final JButton detailButton;
+    private final JButton fullDetailButton;
+    private final JButton exitButton;
+    private JButton backButton;
+    private final String email;
+
+<span class="nc" id="L18">    public accountDetail(String email) {</span>
+<span class="nc" id="L19">        this.email = email;</span>
+
+<span class="nc" id="L21">        setTitle(&quot;Account Detail&quot;);</span>
+<span class="nc" id="L22">        setSize(400, 200);</span>
+<span class="nc" id="L23">        setDefaultCloseOperation(EXIT_ON_CLOSE);</span>
+<span class="nc" id="L24">        setLayout(new GridLayout(4, 1));</span>
+<span class="nc" id="L25">        setLocationRelativeTo(null);</span>
+<span class="nc" id="L26">        detailButton = new JButton(&quot;Detail of Particular Language&quot;);</span>
+<span class="nc" id="L27">        fullDetailButton = new JButton(&quot;Get Whole Detail&quot;);</span>
+<span class="nc" id="L28">        exitButton = new JButton(&quot;Exit&quot;);</span>
+
+<span class="nc" id="L30">        add(detailButton);</span>
+<span class="nc" id="L31">        add(fullDetailButton);</span>
+<span class="nc" id="L32">        add(exitButton);</span>
+
+<span class="nc" id="L34">        detailButton.addActionListener(this);</span>
+<span class="nc" id="L35">        fullDetailButton.addActionListener(this);</span>
+<span class="nc" id="L36">        exitButton.addActionListener(this);</span>
+
+<span class="nc" id="L38">        setVisible(true);</span>
+<span class="nc" id="L39">    }</span>
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+<span class="nc" id="L43">        dispose();</span>
+<span class="nc bnc" id="L44" title="All 2 branches missed.">        if (e.getSource() == detailButton) {</span>
+<span class="nc" id="L45">            dispose();</span>
+<span class="nc" id="L46">            showParticularFieldDetail();</span>
+<span class="nc bnc" id="L47" title="All 2 branches missed.">        } else if (e.getSource() == fullDetailButton) {</span>
+            try {
+<span class="nc" id="L49">                dispose();</span>
+<span class="nc" id="L50">                showFullDetail();</span>
+<span class="nc" id="L51">            } catch (SQLException ex) {</span>
+<span class="nc" id="L52">                throw new RuntimeException(ex);</span>
+<span class="nc" id="L53">            }</span>
+        }else {
+<span class="nc" id="L55">            System.exit(0);</span>
+        }
+<span class="nc" id="L57">    }</span>
+
+    private void showParticularFieldDetail() {
+<span class="nc" id="L60">        Object[] options = {&quot;Java&quot;, &quot;JavaScript&quot;, &quot;Web Development&quot;, &quot;Back&quot;,&quot;Exit&quot;};</span>
+<span class="nc" id="L61">        int choice = JOptionPane.showOptionDialog(this,</span>
+                &quot;Select Language:&quot;,
+                &quot;Language Selection&quot;,
+                JOptionPane.YES_NO_CANCEL_OPTION,
+                JOptionPane.PLAIN_MESSAGE,
+                null,
+                options,
+                options[0]);
+
+<span class="nc bnc" id="L70" title="All 2 branches missed.">        if (choice != JOptionPane.CLOSED_OPTION) {</span>
+            String language;
+<span class="nc bnc" id="L72" title="All 5 branches missed.">            switch (choice) {</span>
+                case 0:
+<span class="nc" id="L74">                    language = &quot;Java&quot;;</span>
+<span class="nc" id="L75">                    break;</span>
+                case 1:
+<span class="nc" id="L77">                    language = &quot;JS&quot;;</span>
+<span class="nc" id="L78">                    break;</span>
+                case 2:
+<span class="nc" id="L80">                    language = &quot;WebDev&quot;;</span>
+<span class="nc" id="L81">                    break;</span>
+                case 3:
+<span class="nc" id="L83">                    new accountDetail(email);</span>
+                default:
+<span class="nc" id="L85">                    return; // Exit if &quot;Exit&quot; is selected</span>
+            }
+<span class="nc" id="L87">            new LanguageScoreGUI(email, language);</span>
+//                showGoBackOption();
+        }
+<span class="nc" id="L90">    }</span>
+
+    private void showFullDetail() throws SQLException {
+
+<span class="nc" id="L94">        AccoutDetailOFParticularUser AU = new AccoutDetailOFParticularUser(&quot;kiranjeetkour144&quot;);</span>
+<span class="nc" id="L95">        AU.setVisible(true);</span>
+<span class="nc" id="L96">    }</span>
+
+
+
+    public static void main(String[] args) {
+<span class="nc" id="L101">        SwingUtilities.invokeLater(() -&gt; new accountDetail(&quot;kiranjeetkour144&quot;));</span>
+<span class="nc" id="L102">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

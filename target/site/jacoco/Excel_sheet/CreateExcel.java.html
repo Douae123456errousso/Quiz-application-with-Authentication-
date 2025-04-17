@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CreateExcel.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Project-1</a> &gt; <a href="index.source.html" class="el_package">Excel_sheet</a> &gt; <span class="el_source">CreateExcel.java</span></div><h1>CreateExcel.java</h1><pre class="source lang-java linenums">package Excel_sheet;
+
+import AdminViews.Back;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.sql.SQLException;
+
+import static Excel_sheet.ExcelDAO.ExcelDetail;
+
+public class CreateExcel extends JFrame {
+
+    private final JTextField filePathField;
+    private final JTextField fileNameField;
+
+<span class="nc" id="L25">    public CreateExcel() {</span>
+<span class="nc" id="L26">        setTitle(&quot;Excel Generator&quot;);</span>
+
+<span class="nc" id="L28">        setSize(400, 200);</span>
+<span class="nc" id="L29">        setDefaultCloseOperation(EXIT_ON_CLOSE);</span>
+
+<span class="nc" id="L31">        JPanel panel = new JPanel(new GridLayout(4, 2));</span>
+<span class="nc" id="L32">        JLabel filePathLabel = new JLabel(&quot;File Path:&quot;);</span>
+<span class="nc" id="L33">        filePathField = new JTextField();</span>
+<span class="nc" id="L34">        JLabel fileNameLabel = new JLabel(&quot;File Name:&quot;);</span>
+<span class="nc" id="L35">        fileNameField = new JTextField();</span>
+<span class="nc" id="L36">        JButton generateButton = new JButton(&quot;Generate Excel&quot;);</span>
+<span class="nc" id="L37">        JButton backButton = new JButton(&quot;Back&quot;);</span>
+<span class="nc" id="L38">        JButton exitButton = new JButton(&quot;Exit&quot;);</span>
+
+<span class="nc" id="L40">        generateButton.addActionListener(new ActionListener() {</span>
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+<span class="nc" id="L44">                generateExcel();</span>
+<span class="nc" id="L45">            }</span>
+        });
+
+<span class="nc" id="L48">        backButton.addActionListener(new ActionListener() {</span>
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+<span class="nc" id="L52">                    dispose();</span>
+<span class="nc" id="L53">                    new Back(&quot;user&quot;);</span>
+<span class="nc" id="L54">                } catch (SQLException ex) {</span>
+<span class="nc" id="L55">                    throw new RuntimeException(ex);</span>
+<span class="nc" id="L56">                }</span>
+<span class="nc" id="L57">            }</span>
+        });
+
+<span class="nc" id="L60">        exitButton.addActionListener(new ActionListener() {</span>
+            @Override
+            public void actionPerformed(ActionEvent e) {
+<span class="nc" id="L63">                System.exit(0);</span>
+<span class="nc" id="L64">            }</span>
+        });
+
+<span class="nc" id="L67">        panel.add(filePathLabel);</span>
+<span class="nc" id="L68">        panel.add(filePathField);</span>
+<span class="nc" id="L69">        panel.add(fileNameLabel);</span>
+<span class="nc" id="L70">        panel.add(fileNameField);</span>
+<span class="nc" id="L71">        panel.add(generateButton);</span>
+<span class="nc" id="L72">        panel.add(backButton);</span>
+<span class="nc" id="L73">        panel.add(exitButton);</span>
+
+<span class="nc" id="L75">        add(panel);</span>
+<span class="nc" id="L76">        setVisible(true);</span>
+<span class="nc" id="L77">    }</span>
+
+    private void generateExcel() {
+<span class="nc" id="L80">        String filePath = filePathField.getText();</span>
+<span class="nc" id="L81">        String fileName = fileNameField.getText();</span>
+
+        // Create a new Workbook
+<span class="nc" id="L84">        try (Workbook workbook = new XSSFWorkbook()) {</span>
+            // Create a new Sheet
+<span class="nc" id="L86">            Sheet sheet = workbook.createSheet(fileName);</span>
+
+            // Create header row
+<span class="nc" id="L89">            Row headerRow = sheet.createRow(0);</span>
+<span class="nc" id="L90">            String[] columns = {&quot;Email&quot;, &quot;Name&quot;, &quot;Game_Name&quot;, &quot;Language&quot;, &quot;Score&quot;};</span>
+<span class="nc bnc" id="L91" title="All 2 branches missed.">            for (int i = 0; i &lt; columns.length; i++) {</span>
+<span class="nc" id="L92">                Cell cell = headerRow.createCell(i);</span>
+<span class="nc" id="L93">                cell.setCellValue(columns[i]);</span>
+            }
+
+            // Get data from database
+            String[][] data;
+            try {
+<span class="nc" id="L99">                data = ExcelDetail();</span>
+<span class="nc" id="L100">            } catch (SQLException e) {</span>
+<span class="nc" id="L101">                e.printStackTrace();</span>
+<span class="nc" id="L102">                throw new RuntimeException(e);</span>
+<span class="nc" id="L103">            }</span>
+
+            // Populate data rows
+<span class="nc" id="L106">            int rowNum = 1;</span>
+<span class="nc bnc" id="L107" title="All 2 branches missed.">            for (String[] rowData : data) {</span>
+<span class="nc" id="L108">                Row row = sheet.createRow(rowNum++);</span>
+<span class="nc bnc" id="L109" title="All 2 branches missed.">                for (int i = 0; i &lt; rowData.length; i++) {</span>
+<span class="nc" id="L110">                    row.createCell(i).setCellValue(rowData[i]);</span>
+                }
+            }
+
+            // Write the output to a file
+<span class="nc" id="L115">            try (FileOutputStream fileOut = new FileOutputStream(filePath + fileName + &quot;.xlsx&quot;)) {</span>
+<span class="nc" id="L116">                workbook.write(fileOut);</span>
+            }
+
+<span class="nc" id="L119">            System.out.println(&quot;Excel file has been created successfully.&quot;);</span>
+
+<span class="nc" id="L121">        } catch (IOException e) {</span>
+<span class="nc" id="L122">            e.printStackTrace();</span>
+<span class="nc" id="L123">            throw new RuntimeException(e);</span>
+<span class="nc" id="L124">        }</span>
+<span class="nc" id="L125">    }</span>
+
+    public static void main(String[] args) {
+<span class="nc" id="L128">        SwingUtilities.invokeLater(new Runnable() {</span>
+            @Override
+            public void run() {
+<span class="nc" id="L131">                new CreateExcel();</span>
+<span class="nc" id="L132">            }</span>
+        });
+<span class="nc" id="L134">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

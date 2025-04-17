@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AddNewAdmin.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Project-1</a> &gt; <a href="index.source.html" class="el_package">AdminViews</a> &gt; <span class="el_source">AddNewAdmin.java</span></div><h1>AddNewAdmin.java</h1><pre class="source lang-java linenums">package AdminViews;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+import java.sql.SQLException;
+import static dao.AdminDAO.saveAdmin;
+import static dao.UserDAO.isExist;
+
+import servies.GenerateOTP;
+import servies.SendOTPService;
+
+public class AddNewAdmin extends JFrame implements ActionListener {
+    private JTextField nameField, emailField, passwordField, otpField;
+    private JButton sendOTPButton, addAdminButton, backButton, exitButton;
+    private String generatedOTP;
+
+<span class="nc" id="L18">    public AddNewAdmin() {</span>
+<span class="nc" id="L19">        setTitle(&quot;Add New Admin&quot;);</span>
+<span class="nc" id="L20">        setSize(400, 300);</span>
+<span class="nc" id="L21">        setDefaultCloseOperation(EXIT_ON_CLOSE);</span>
+<span class="nc" id="L22">        setLayout(new GridLayout(6, 2));</span>
+
+<span class="nc" id="L24">        JLabel nameLabel = new JLabel(&quot;Enter name:&quot;);</span>
+<span class="nc" id="L25">        nameField = new JTextField();</span>
+<span class="nc" id="L26">        JLabel emailLabel = new JLabel(&quot;Enter email:&quot;);</span>
+<span class="nc" id="L27">        emailField = new JTextField();</span>
+<span class="nc" id="L28">        JLabel passwordLabel = new JLabel(&quot;Enter password:&quot;);</span>
+<span class="nc" id="L29">        passwordField = new JPasswordField();</span>
+
+<span class="nc" id="L31">        sendOTPButton = new JButton(&quot;Send OTP&quot;);</span>
+<span class="nc" id="L32">        backButton = new JButton(&quot;Back&quot;);</span>
+<span class="nc" id="L33">        exitButton = new JButton(&quot;Exit&quot;);</span>
+<span class="nc" id="L34">        add(nameLabel);</span>
+<span class="nc" id="L35">        add(nameField);</span>
+<span class="nc" id="L36">        add(emailLabel);</span>
+<span class="nc" id="L37">        add(emailField);</span>
+<span class="nc" id="L38">        add(passwordLabel);</span>
+<span class="nc" id="L39">        add(passwordField);</span>
+<span class="nc" id="L40">        add(sendOTPButton);</span>
+<span class="nc" id="L41">        add(backButton);</span>
+<span class="nc" id="L42">        add(exitButton);</span>
+
+
+<span class="nc" id="L45">        sendOTPButton.addActionListener(this);</span>
+<span class="nc" id="L46">         backButton.addActionListener(this);</span>
+<span class="nc" id="L47">         exitButton.addActionListener(this);</span>
+<span class="nc" id="L48">        setVisible(true);</span>
+<span class="nc" id="L49">    }</span>
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+<span class="nc bnc" id="L53" title="All 2 branches missed.">        if (e.getSource() == sendOTPButton) {</span>
+<span class="nc" id="L54">            String name = nameField.getText();</span>
+<span class="nc" id="L55">            String email = emailField.getText();</span>
+<span class="nc" id="L56">            String password = passwordField.getText();</span>
+
+            try {
+<span class="nc bnc" id="L59" title="All 2 branches missed.">                if (isExist(email, &quot;admin&quot;)) {</span>
+<span class="nc" id="L60">                    JOptionPane.showMessageDialog(this, &quot;Admin with this email already exists. Please use a different email.&quot;, &quot;Error&quot;, JOptionPane.ERROR_MESSAGE);</span>
+<span class="nc" id="L61">                    return;</span>
+                }
+
+<span class="nc" id="L64">                generatedOTP = GenerateOTP.getOTP();</span>
+<span class="nc" id="L65">                String message = &quot;Hey &quot; + name + &quot;,\nHere is your OTP to add as an admin in the Quiz Game: &quot; + generatedOTP;</span>
+<span class="nc" id="L66">                SendOTPService.sentOTP(email, generatedOTP, message);</span>
+
+<span class="nc" id="L68">                JPanel otpPanel = new JPanel(new GridLayout(2, 1));</span>
+<span class="nc" id="L69">                otpField = new JTextField();</span>
+<span class="nc" id="L70">                JButton addAdminButton = new JButton(&quot;Add Admin&quot;);</span>
+
+<span class="nc" id="L72">                otpPanel.add(new JLabel(&quot;Enter OTP:&quot;));</span>
+<span class="nc" id="L73">                otpPanel.add(otpField);</span>
+
+<span class="nc" id="L75">                otpPanel.add(addAdminButton);</span>
+<span class="nc" id="L76">                add(otpPanel);</span>
+
+<span class="nc" id="L78">                addAdminButton.addActionListener(this);</span>
+
+<span class="nc" id="L80">                validate();</span>
+<span class="nc" id="L81">                repaint();</span>
+<span class="nc" id="L82">            } catch (SQLException ex) {</span>
+<span class="nc" id="L83">                JOptionPane.showMessageDialog(this, &quot;Error checking admin existence or sending OTP: &quot; + ex.getMessage(), &quot;Error&quot;, JOptionPane.ERROR_MESSAGE);</span>
+<span class="nc" id="L84">                dispose();</span>
+<span class="nc" id="L85">                new AddNewAdmin();</span>
+<span class="nc" id="L86">            } catch (Exception ex) {</span>
+<span class="nc" id="L87">                JOptionPane.showMessageDialog(this, &quot;Error sending OTP. Please try again later.&quot;, &quot;Error&quot;, JOptionPane.ERROR_MESSAGE);</span>
+<span class="nc" id="L88">                dispose();</span>
+<span class="nc" id="L89">                new AddNewAdmin();</span>
+<span class="nc" id="L90">            }</span>
+<span class="nc bnc" id="L91" title="All 2 branches missed.">        } else if (e.getActionCommand().equals(&quot;Add Admin&quot;)) {</span>
+
+<span class="nc" id="L93">            String otp = otpField.getText();</span>
+<span class="nc bnc" id="L94" title="All 2 branches missed.">            if (otp.equals(generatedOTP)) {</span>
+                try {
+<span class="nc" id="L96">                    String name = nameField.getText();</span>
+<span class="nc" id="L97">                    String email = emailField.getText();</span>
+<span class="nc" id="L98">                    String password = passwordField.getText();</span>
+
+<span class="nc" id="L100">                    saveAdmin(name, email, password);</span>
+<span class="nc" id="L101">                    JOptionPane.showMessageDialog(this, &quot;Admin saved successfully&quot;);</span>
+<span class="nc" id="L102">                } catch (SQLException ex) {</span>
+<span class="nc" id="L103">                    JOptionPane.showMessageDialog(this, &quot;Error saving admin: &quot; + ex.getMessage(), &quot;Error&quot;, JOptionPane.ERROR_MESSAGE);</span>
+<span class="nc" id="L104">                }</span>
+            } else {
+<span class="nc" id="L106">                JOptionPane.showMessageDialog(this, &quot;Wrong OTP&quot;, &quot;Error&quot;, JOptionPane.ERROR_MESSAGE);</span>
+            }
+<span class="nc bnc" id="L108" title="All 2 branches missed.">        }else if(e.getSource() == backButton){</span>
+<span class="nc" id="L109">            dispose();</span>
+            try {
+<span class="nc" id="L111">                new AboutAdmin();</span>
+<span class="nc" id="L112">            } catch (SQLException ex) {</span>
+<span class="nc" id="L113">                throw new RuntimeException(ex);</span>
+<span class="nc" id="L114">            }</span>
+        }else{
+<span class="nc" id="L116">            dispose();</span>
+            try {
+<span class="nc" id="L118">                new AView1();</span>
+<span class="nc" id="L119">            } catch (SQLException ex) {</span>
+<span class="nc" id="L120">                throw new RuntimeException(ex);</span>
+<span class="nc" id="L121">            }</span>
+        }
+<span class="nc" id="L123">    }</span>
+
+    public static void main(String[] args) {
+<span class="nc" id="L126">        SwingUtilities.invokeLater(() -&gt; new AddNewAdmin());</span>
+<span class="nc" id="L127">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

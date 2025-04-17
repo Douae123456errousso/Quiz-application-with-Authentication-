@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AddQuestionGUI.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Project-1</a> &gt; <a href="index.source.html" class="el_package">AdminViews</a> &gt; <span class="el_source">AddQuestionGUI.java</span></div><h1>AddQuestionGUI.java</h1><pre class="source lang-java linenums">package AdminViews;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.SQLException;
+
+
+public class AddQuestionGUI extends JFrame implements ActionListener {
+    private JButton javaButton;
+    private JButton jsButton;
+    private final JButton webdevButton;
+    private final JButton backButton;
+    private JTextField tableField;
+
+<span class="nc" id="L17">    public AddQuestionGUI() {</span>
+<span class="nc" id="L18">        setTitle(&quot;Add Question&quot;);</span>
+<span class="nc" id="L19">        setSize(400, 200);</span>
+<span class="nc" id="L20">        setLocationRelativeTo(null);</span>
+<span class="nc" id="L21">        setDefaultCloseOperation(EXIT_ON_CLOSE);</span>
+<span class="nc" id="L22">        setLayout(new GridLayout(3, 2));</span>
+
+<span class="nc" id="L24">        javaButton = new JButton(&quot;Java&quot;);</span>
+<span class="nc" id="L25">        jsButton = new JButton(&quot;JS&quot;);</span>
+<span class="nc" id="L26">        webdevButton = new JButton(&quot;Webdev&quot;);</span>
+<span class="nc" id="L27">        backButton = new JButton(&quot;Back&quot;);</span>
+
+
+
+<span class="nc" id="L31">        add(javaButton);</span>
+<span class="nc" id="L32">        add(jsButton);</span>
+<span class="nc" id="L33">        add(webdevButton);</span>
+<span class="nc" id="L34">        add(backButton);</span>
+
+<span class="nc" id="L36">        javaButton.addActionListener(this);</span>
+<span class="nc" id="L37">        jsButton.addActionListener(this);</span>
+<span class="nc" id="L38">        webdevButton.addActionListener(this);</span>
+<span class="nc" id="L39">        backButton.addActionListener(this);</span>
+
+<span class="nc" id="L41">        setVisible(true);</span>
+<span class="nc" id="L42">    }</span>
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+<span class="nc" id="L46">        dispose();</span>
+<span class="nc bnc" id="L47" title="All 2 branches missed.">        if (e.getSource() == javaButton) {</span>
+<span class="nc" id="L48">            new AddQuestion(&quot;Java&quot;);</span>
+<span class="nc bnc" id="L49" title="All 2 branches missed.">        } else if (e.getSource() == jsButton) {</span>
+<span class="nc" id="L50">            new AddQuestion(&quot;js&quot;);</span>
+<span class="nc bnc" id="L51" title="All 2 branches missed.">        } else if (e.getSource() == webdevButton) {</span>
+<span class="nc" id="L52">            new AddQuestion(&quot;webdev&quot;);</span>
+<span class="nc bnc" id="L53" title="All 2 branches missed.">        } else if (e.getSource() == backButton) {</span>
+            try {
+<span class="nc" id="L55">                new Back(&quot;user&quot;);</span>
+<span class="nc" id="L56">            } catch (SQLException ex) {</span>
+<span class="nc" id="L57">                throw new RuntimeException(ex);</span>
+<span class="nc" id="L58">            }</span>
+        }
+<span class="nc" id="L60">    }</span>
+    public static void main(String[] args) {
+<span class="nc" id="L62">        new AddQuestionGUI();</span>
+<span class="nc" id="L63">    }</span>
+
+}
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>
