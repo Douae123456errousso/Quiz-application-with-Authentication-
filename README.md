@@ -82,3 +82,6 @@ The project follows a logical and physical design approach, incorporating user-f
 Open-source on GitHub, the project encourages community contributions, fostering collaboration and innovation. Overall, it offers an engaging and secure platform for users to participate in quizzes while adhering to authentication and data security standards.
 
 jmjmjmgjhvj,mmcndrfcgmgj
+
+
+ manal manal
