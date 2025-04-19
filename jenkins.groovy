@@ -49,8 +49,7 @@ pipeline {
                     bat "if not exist %DEPLOY_DIR% mkdir %DEPLOY_DIR%"
 
                     // Copier le JAR (le plus récent dans target)
-                    bat 'for /f %%f in (\'dir /b /od target\\*.jar\') do set LAST_JAR=%%f'
-                    bat 'copy target\\%LAST_JAR% %DEPLOY_DIR%\\%JAR_NAME% /Y'
+                    bat 'for /f %%f in (\'dir /b /a:-d target\\*.jar\') do copy target\\%%f %DEPLOY_DIR%\\%JAR_NAME% /Y & goto done :done'
 
                     // Tuer un ancien process Java si l'app est déjà lancée (optionnel)
                     bat 'for /f "tokens=2" %%i in (\'tasklist ^| findstr java.exe\') do taskkill /PID %%i /F'
