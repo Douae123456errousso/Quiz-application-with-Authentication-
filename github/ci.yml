@@ -39,3 +39,14 @@ jobs:
       with:
         name: jacoco-report
         path: target/site/jacoco  # Path where the JaCoCo report is saved
+        # Step 6: Send Slack notification on failure
+    - name: Notify Slack on failure
+      if: failure()  # Cette étape ne s'exécute que si le build échoue
+      uses: slackapi/slack-github-action@v1.24.0
+      with:
+        payload: |
+          {
+            "text": ":x: Le build ou les tests ont échoué sur *${{ github.repository }}* (commit: ${{ github.sha }}). Vérifiez le workflow : ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          }
+      env:
+        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
