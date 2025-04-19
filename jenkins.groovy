@@ -9,7 +9,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git 'https://github.com/Douae123456errousso/Quiz-application-with-Authentication-.git'
+                git branch: 'main', url: 'https://github.com/Douae123456errousso/Quiz-application-with-Authentication-.git'
             }
         }
 
@@ -35,7 +35,7 @@ pipeline {
     post {
         always {
             junit '*/target/surefire-reports/.xml'
-            archiveArtifacts artifacts: 'target/site/jacoco/**', fingerprint: true
+            archiveArtifacts artifacts: 'target/site/jacoco/', fingerprint: true
         }
         failure {
             echo 'Le build a échoué.'

@@ -1,8 +1,8 @@
 -------------------------------------------------------------------------------
 Test set: MyAppTest
 -------------------------------------------------------------------------------
-Tests run: 1, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 0.145 s <<< FAILURE! - in MyAppTest
-MyAppTest.testQuiEchoue  Time elapsed: 0.077 s  <<< FAILURE!
+Tests run: 1, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 0.264 s <<< FAILURE! - in MyAppTest
+MyAppTest.testQuiEchoue  Time elapsed: 0.164 s  <<< FAILURE!
 org.opentest4j.AssertionFailedError: Ce test échoue exprès pour tester les alertes Slack.
 	at org.junit.jupiter.api.AssertionUtils.fail(AssertionUtils.java:38)
 	at org.junit.jupiter.api.Assertions.fail(Assertions.java:134)
