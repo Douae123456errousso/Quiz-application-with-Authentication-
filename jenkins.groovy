@@ -15,27 +15,27 @@ pipeline {
 
         stage('Compile') {
             steps {
-                sh 'mvn compile'
+                bat 'mvn compile'
             }
         }
 
         stage('Test') {
             steps {
-                sh 'mvn test'
+                bat 'mvn test'
             }
         }
 
         stage('Code Coverage') {
             steps {
-                sh 'mvn jacoco:report'
+                bat 'mvn jacoco:report'
             }
         }
     }
 
     post {
         always {
-            junit '*/target/surefire-reports/.xml'
-            archiveArtifacts artifacts: 'target/site/jacoco/', fingerprint: true
+            junit 'target\\surefire-reports\\*.xml'
+            archiveArtifacts artifacts: 'target\\site\\jacoco\\**', fingerprint: true
         }
         failure {
             echo 'Le build a échoué.'
