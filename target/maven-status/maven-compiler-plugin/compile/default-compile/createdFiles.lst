@@ -42,6 +42,7 @@ AdminViews\AboutAdmin$1.class
 AdminViews\AboutUser$2.class
 AdminViews\AboutAdmin$4.class
 AdminViews\AView1$3.class
+EmailSender$1.class
 dao\AdminDAO.class
 dao\ScoreGUI$1.class
 servies\SendOTPService.class
@@ -74,3 +75,4 @@ views\View2$5.class
 Excel_sheet\CreateExcel$3.class
 Excel_sheet\CreateExcel.class
 views\Quiz$1.class
+EmailSender.class
